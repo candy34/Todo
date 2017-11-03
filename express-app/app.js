@@ -1,41 +1,57 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const listDal = require('./dal');
-const mustacheExpress = require('mustache-express');
-const open = require('./open');
+const todosDal = require('./dal');
+const mustache = require('mustache-express');
+const urlencodedParser = bodyParser.urlencoded({extended: false});
+// const open = require('./open');
 const app = express();
+const todos = require('./todos');
 
-app.use(express.static('public'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-// app.use(function(request, response, next) {
-//   next();
-app.engine('mustache', mustacheExpress());
+app.engine('mustache', mustache());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + "/views");
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(express.static('public'))
 
-const todos = ["Wash the dogs", "Clean the house", "Change the light bulbs"];
+ const todo = ["Wash the dogs", "Clean the house", "Change the light bulbs"];
 
-var tasksCompleted = ["wash the dogs", "scoop the poop", "take out the trash"];
+ const todosCompleted = ["wash the dogs", "scoop the poop", "take out the trash"];
 
 app.get("/", function(request, response) {
-  response.render('todo', {
-    todos: listDal.getOpenList(),
-    tasksCompleted: (tasksCompleted)
-  });
-})
+  console.log('todos');
+  response.render('todo', {todos: todos})
+});
+
+app.post('./todos', function(request, response) {
+console.log(request.body.add)
+todosDal.addTodos(request.body.add);
+response.redirect('/');
+});
+// } else {
+//   todos.splice(todos.indexOf(request.body.incomplete), 1);
+//   tasksCompleted.push(request.body.incomplete);
+//   response.redirect("/");
+// }
+
+// app.post('./todos', function(request, response) {
+// todosDal.removeTodos(req.params);
+// res.redirect('./completed')
+//
+// });
 app.post("/", function(request, response) {
   if (request.body.todos) {
     todos.push(request.body.todos);
     response.redirect('/');
   } else {
     todos.splice(todos.indexOf(request.body.incomplete), 1);
-    tasksCompleted.push(request.body.incomplete);
+    todosCompleted.push(request.body.incomplete);
     response.redirect("/");
   }
 
 });
+app.set('port', 3000)
 
-app.listen(3000, function() {
-  console.log('Successfully started express application!');
+app.listen(app.get('port'), function() {
+console.log('Successfully started express application!')
 });

@@ -1,40 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://example.com">
 
-    <title>Submit Info</title>
-    <link rel="stylesheet" href="/app.css">
-  </head>
-  <body>
-    <form action="/" method="post">
-      <div class="todos">
-        <label for="todos"> Enter Todos Below:</label>
-        <input type="text" name="todos" value=" " placeholder=" ">
-        <button type="submit">Add todos</button>
-      </div>
-    </form>
-    <div class="container">
-      <h1>Todos Entered By User:</h1>
-      <ul>
-        {{#todos}}
+<head>
+  <meta charset="utf-8">
+  <title>To Do List</title>
+  <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+  <link rel="stylesheet" href="/app.css">
+
+</head>
+
+<body>
+  <form action="/" method="post">
+    <div class="todos">
+      <label for="todos"> Enter Todos :</label>
+      <input type="text" name="todos" value=" " placeholder=" ">
+      <button type="submit">Add todos</button>
+    </div>
+  </form>
+  <div class="container">
+    <h1>Todos Entered By User:</h1>
+    <ul>
+      {{#todos}}
         <form class="incomplete" action="/" method="post">
-        <input type="submit" name="incomplete" value="{{.}}">
-        {{/todos}}
-      </ul>
+          <input type="submit" name="incomplete" value="{{.}}">
+      {{/todos}}
+    </ul>
     </form>
-    </div>
+  </div>
 
-    <div>
-    <form class="complete">
-        <h1> Tasks Completed:</h1>
-      {{#tasksCompleted}}
-      <form class="tasksCompleted">
-        {{.}}
-      </form>
-      {{/tasksCompleted}}
-    </div>
+  <div>
+    <form class="completed">
+      <h1> Todos Completed:</h1>
+      {{#todosCompleted}}
+        <form class="todosCompleted">
+          {{.}}
+        </form>
+      {{/todosCompleted}}
+  </div>
 
-  </body>
+</body>
+
 </html>
